@@ -1,18 +1,49 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-G = nx.Graph()
+def char_book_graph():
+    G = nx.Graph()
 
-f = open("marvel_collaborations_dataset.txt", "r")
+    f = open("marvel_collaborations_dataset.txt", "r")
 
-lines = f.readlines()[1:]
+    lines = f.readlines()[1:]
 
-book_app = [ line.split() for line in lines ]
+    book_app = [ line.split() for line in lines ]
 
-for book in book_app:
-    print(book[0])
-    for chara in book[1:]:
-        G.add_edge(book[0], chara)
+    for book in book_app:
+        print(book[0])
+        for chara in book[1:]:
+            G.add_edge(book[0], chara)
+    return G
 
-nx.draw(G)
-plt.show()
+def char_colab_graph():
+    G = nx.Graph()
+
+    f = open("marvel_collaborations_dataset.txt", "r")
+
+    lines = f.readlines()[1:]
+
+    marvel_appear = [ line.split() for line in lines ]
+
+    dic_book_colabs = {}
+
+    for char_books in marvel_appear:
+        char = char_books[0]
+        for book in char_books[1:]:
+            if book in dic_book_colabs:
+                dic_book_colabs[book] += [char]
+            else:
+                dic_book_colabs[book] = [char]
+
+    for book in dic_book_colabs:
+        char_colabs = dic_book_colabs[book]
+        for i in range(len(char_colabs)):
+            for j in range(i+1, len(char_colabs)):
+                G.add_edge(char_colabs[i], char_colabs[j])
+
+    return G
+
+
+
+if __name__ == '__main__':
+    char_colab_graph()
