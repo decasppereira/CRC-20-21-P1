@@ -25,9 +25,34 @@ def show_distribution(G):
     plt.scatter(x_axis, y_axis)
     plt.show()
 
+def get_local_clustering(G, n):
+    node_neighbors = list(nx.neighbors(G, n))
+    Li = 0
+    ki = len(node_neighbors)
+    if ki <= 1:
+        print('Impossible to calculate clustering. Node has too few neighbors.')
+        return 0
+    for nd in node_neighbors:
+        for i in nx.neighbors(G, nd):
+            if i in node_neighbors:
+                Li += 1
+    return Li / (ki * (ki-1))
+
+def get_average_clustering(G):
+    sum = 0
+    N = nx.number_of_nodes(G)
+    print(G.nodes())
+    for n in G.nodes():
+        print(n)
+        sum += get_local_clustering(G,n)
+    return sum/N
+    
+def get_average_path_lenght(G):
+    return 0
+
 
 if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
-    show_distribution(G)
+    print(get_local_clustering(G, 154))
     

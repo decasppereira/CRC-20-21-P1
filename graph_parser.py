@@ -31,9 +31,9 @@ def char_colab_graph():
         char = char_books[0]
         for book in char_books[1:]:
             if book in dic_book_colabs:
-                dic_book_colabs[book] += [char]
+                dic_book_colabs[book] += [int(char)]
             else:
-                dic_book_colabs[book] = [char]
+                dic_book_colabs[book] = [int(char)]
 
     for book in dic_book_colabs:
         char_colabs = dic_book_colabs[book]
