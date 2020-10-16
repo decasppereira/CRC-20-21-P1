@@ -93,6 +93,7 @@ if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
     #print("Average Degree: " + get_average_degree(G))
-    print("Average Path Length: " + str(nx.average_shortest_path_length(get_largest_component(G))))
-    
+    largest_component = get_largest_component(G)
+    print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
+    print("Diameter: " + str(nx.diameter(largest_component)))
     
