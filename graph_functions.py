@@ -24,10 +24,14 @@ def show_linear_scale_dist(G):
     degree_list = nx.degree_histogram(G)
     max_degree = len(degree_list)
     N = nx.number_of_nodes(G)
-    x_axis = [i for i in range(max_degree)]
-    y_axis = [j/N for j in degree_list]
+    y_aux = [j/N for j in degree_list]
+
+    x_axis = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
+    y_axis = list(filter(lambda y: y!=0, y_aux))
         
-    plt.scatter(x_axis, y_axis, s=1.5)
+    plt.xlabel('Degree (k)')
+    plt.ylabel('Probability of a Node with Degree k (Pk)')
+    plt.scatter(x_axis,y_axis, s=1)
     plt.show()
 
 def show_log_scale_dist(G):
@@ -36,6 +40,8 @@ def show_log_scale_dist(G):
     N = nx.number_of_nodes(G)
     x = [np.log10(i) for i in range(max_degree)]
     y = [np.log10(j/N) for j in degree_list]
+    plt.xlabel('Degree (k)')
+    plt.ylabel('Probability of a Node having degree k (Pk)')
     plt.scatter(x,y, s=1)
     plt.show()
 
@@ -44,16 +50,21 @@ def show_power_law(G):
     max_degree = len(degree_list)
     N = nx.number_of_nodes(G)
 
-    x = [i for i in range(max_degree)]
-    y = [j/N for j in degree_list]
-    
-    popt, pcov = curve_fit(power_law, x[2:], y[2:])
+    y_aux = [j/N for j in degree_list]
 
-    plt.scatter(x, y)
-    plt.plot(x, power_law(x, *popt), 'r')
+    x = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
+    y = list(filter(lambda y: y!=0, y_aux))
     
-    plt.xscale('log')
-    plt.yscale('log')
+    popt, pcov = curve_fit(power_law, x[1:], y[1:])
+
+    plt.xlabel('Degree (k)')
+    plt.ylabel('Probability of a Node with Degree k (Pk)')
+    plt.ylim((0, 0.045))
+    plt.scatter(x, y, s=1)
+    plt.plot(x[1:], power_law(x[1:], *popt), 'r')
+    
+    # plt.xscale('log')
+    # plt.yscale('log')
     plt.show()
     print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))  
 
@@ -92,8 +103,11 @@ def get_betweeness_centrality(G):
 if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
-    #print("Average Degree: " + get_average_degree(G))
-    largest_component = get_largest_component(G)
-    print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
-    print("Diameter: " + str(nx.diameter(largest_component)))
+    # print("Node Size: " + str(nx.number_of_nodes(G)))
+    # print("Number of Edges: " + str(nx.number_of_edges(G)))
+    # print("Average Degree: " + str(get_average_degree(G)))
+    # largest_component = get_largest_component(G)
+    # print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
+    # print("Diameter: " + str(nx.diameter(largest_component)))
+    show_power_law(G)
     
