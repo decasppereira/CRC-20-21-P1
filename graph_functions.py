@@ -95,26 +95,32 @@ def get_largest_component(G):
     print("Size of the largest connected component: " + str(len(largest_cc)))
     return G.subgraph(largest_cc).copy()
 
-
-#TODO
-def get_betweeness_centrality(G):
-    return 0
-
 def get_degree_centrality(G):
-    most_degree = []
-    dc = nx.degree_centrality(G)
-    for x in dc:
-        if dc[x] > 0.25:
-            most_degree += [x]
-
-    return most_degree
+    return nx.degree_centrality(G)
 
 def get_closeness_centrality(G):
     return nx.closeness_centrality(G)
 
+def get_betweenness_centrality(G):
+    return nx.betweenness_centrality(G)
+
 def print_names(n_name_dic, nodes):
     for node in nodes:
         print(n_name_dic[node])
+
+def get_3_best_nodes(dic_node_cent):
+    best3 = {}
+
+    for i in range(3):
+        max_c = 0
+        max_n = 0
+        for node in dic_node_cent:
+            if dic_node_cent[node] > max_c and node not in best3.keys():
+                max_c = dic_node_cent[node]
+                max_n = node
+        best3[max_n] = max_c
+
+    return best3
 
 
 if __name__ == '__main__':
@@ -124,8 +130,21 @@ if __name__ == '__main__':
     # print("Node Size: " + str(nx.number_of_nodes(G)))
     # print("Number of Edges: " + str(nx.number_of_edges(G)))
     # print("Average Degree: " + str(get_average_degree(G)))
-    # largest_component = get_largest_component(G)
+    #largest_component = get_largest_component(G)
     # print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
     # print("Diameter: " + str(nx.diameter(largest_component)))
 
-    get_closeness_centrality(G)
+    # deg_cent = get_degree_centrality(G)
+
+    # print(get_3_best_nodes(deg_cent))
+    # print_names(n_name_dic, get_3_best_nodes(deg_cent))
+
+    # clos_cent = get_closeness_centrality(G)
+
+    # print(get_3_best_nodes(clos_cent))
+    # print_names(n_name_dic, get_3_best_nodes(clos_cent))
+
+    bet_cent = get_betweenness_centrality(G)
+
+    print(get_3_best_nodes(bet_cent))
+    print_names(n_name_dic, get_3_best_nodes(bet_cent))
