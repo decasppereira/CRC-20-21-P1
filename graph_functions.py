@@ -28,7 +28,7 @@ def show_linear_scale_dist(G):
 
     x_axis = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
     y_axis = list(filter(lambda y: y!=0, y_aux))
-        
+
     plt.xlabel('Degree (k)')
     plt.ylabel('Probability of a Node with Degree k (Pk)')
     plt.scatter(x_axis,y_axis, s=1)
@@ -54,7 +54,7 @@ def show_power_law(G):
 
     x = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
     y = list(filter(lambda y: y!=0, y_aux))
-    
+
     popt, pcov = curve_fit(power_law, x[1:], y[1:])
 
     plt.xlabel('Degree (k)')
@@ -62,11 +62,11 @@ def show_power_law(G):
     plt.ylim((0, 0.045))
     plt.scatter(x, y, s=1)
     plt.plot(x[1:], power_law(x[1:], *popt), 'r')
-    
+
     # plt.xscale('log')
     # plt.yscale('log')
     plt.show()
-    print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))  
+    print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))
 
 def get_local_clustering(G, n):
     node_neighbors = list(nx.neighbors(G, n))
@@ -96,18 +96,36 @@ def get_largest_component(G):
     return G.subgraph(largest_cc).copy()
 
 
-#TODO 
+#TODO
 def get_betweeness_centrality(G):
     return 0
+
+def get_degree_centrality(G):
+    most_degree = []
+    dc = nx.degree_centrality(G)
+    for x in dc:
+        if dc[x] > 0.25:
+            most_degree += [x]
+
+    return most_degree
+
+def get_closeness_centrality(G):
+    return nx.closeness_centrality(G)
+
+def print_names(n_name_dic, nodes):
+    for node in nodes:
+        print(n_name_dic[node])
+
 
 if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
+    n_name_dic = gparser.car_name_dic()
     # print("Node Size: " + str(nx.number_of_nodes(G)))
     # print("Number of Edges: " + str(nx.number_of_edges(G)))
     # print("Average Degree: " + str(get_average_degree(G)))
     # largest_component = get_largest_component(G)
     # print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
     # print("Diameter: " + str(nx.diameter(largest_component)))
-    show_power_law(G)
-    
+
+    get_closeness_centrality(G)
