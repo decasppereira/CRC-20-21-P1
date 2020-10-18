@@ -126,7 +126,7 @@ def get_3_best_nodes(dic_node_cent):
 if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
-    n_name_dic = gparser.car_name_dic()
+    #n_name_dic = gparser.car_name_dic()
     # print("Node Size: " + str(nx.number_of_nodes(G)))
     # print("Number of Edges: " + str(nx.number_of_edges(G)))
     # print("Average Degree: " + str(get_average_degree(G)))
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     # print(get_3_best_nodes(clos_cent))
     # print_names(n_name_dic, get_3_best_nodes(clos_cent))
 
-    bet_cent = get_betweenness_centrality(G)
+    # bet_cent = get_betweenness_centrality(G)
 
-    print(get_3_best_nodes(bet_cent))
-    print_names(n_name_dic, get_3_best_nodes(bet_cent))
+    # print(get_3_best_nodes(bet_cent))
+    # print_names(n_name_dic, get_3_best_nodes(bet_cent))
