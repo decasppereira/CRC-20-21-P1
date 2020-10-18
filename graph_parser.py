@@ -4,7 +4,7 @@ import networkx as nx
 def char_book_graph():
     G = nx.Graph()
 
-    f = open("marvel_collaborations_dataset.txt", "r")
+    f = open("datasets/marvel_collaborations_dataset.txt", "r")
 
     lines = f.readlines()[1:]
     f.close()
@@ -19,7 +19,7 @@ def char_book_graph():
 def char_colab_graph():
     G = nx.Graph()
 
-    f = open("marvel_collaborations_dataset.txt", "r")
+    f = open("datasets/marvel_collaborations_dataset.txt", "r")
 
     lines = f.readlines()[1:]
     f.close()
