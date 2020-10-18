@@ -9,7 +9,7 @@ def char_book_graph():
     lines = f.readlines()[1:]
     f.close()
     book_app = [ line.split() for line in lines ]
-    
+
     for book in book_app:
         print(book[0])
         for chara in book[1:]:
@@ -46,6 +46,21 @@ def char_colab_graph():
 
     return G
 
+def car_name_dic():
+
+    f = open("marvel_names.txt", "r")
+    lines = f.readlines()[1:]
+    f.close()
+
+    marvel_names = [ line.split(" ",1) for line in lines ]
+
+
+    n_name_dic = {}
+
+    for names in marvel_names:
+        n_name_dic[int(names[0])] = names[1][1:-2]
+
+    return n_name_dic
 
 if __name__ == '__main__':
     char_colab_graph()

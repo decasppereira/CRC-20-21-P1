@@ -28,7 +28,7 @@ def show_linear_scale_dist(G):
 
     x_axis = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
     y_axis = list(filter(lambda y: y!=0, y_aux))
-        
+
     plt.xlabel('Degree (k)')
     plt.ylabel('Probability of a Node with Degree k (Pk)')
     plt.scatter(x_axis,y_axis, s=1)
@@ -54,7 +54,7 @@ def show_power_law(G):
 
     x = list(filter(lambda i: y_aux[i] != 0, range(max_degree)))
     y = list(filter(lambda y: y!=0, y_aux))
-    
+
     popt, pcov = curve_fit(power_law, x[1:], y[1:])
 
     plt.xlabel('Degree (k)')
@@ -62,11 +62,11 @@ def show_power_law(G):
     plt.ylim((0, 0.045))
     plt.scatter(x, y, s=1)
     plt.plot(x[1:], power_law(x[1:], *popt), 'r')
-    
+
     # plt.xscale('log')
     # plt.yscale('log')
     plt.show()
-    print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))  
+    print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))
 
 def get_local_clustering(G, n):
     node_neighbors = list(nx.neighbors(G, n))
@@ -95,19 +95,56 @@ def get_largest_component(G):
     print("Size of the largest connected component: " + str(len(largest_cc)))
     return G.subgraph(largest_cc).copy()
 
+def get_degree_centrality(G):
+    return nx.degree_centrality(G)
 
-#TODO 
-def get_betweeness_centrality(G):
-    return 0
+def get_closeness_centrality(G):
+    return nx.closeness_centrality(G)
+
+def get_betweenness_centrality(G):
+    return nx.betweenness_centrality(G)
+
+def print_names(n_name_dic, nodes):
+    for node in nodes:
+        print(n_name_dic[node])
+
+def get_3_best_nodes(dic_node_cent):
+    best3 = {}
+
+    for i in range(3):
+        max_c = 0
+        max_n = 0
+        for node in dic_node_cent:
+            if dic_node_cent[node] > max_c and node not in best3.keys():
+                max_c = dic_node_cent[node]
+                max_n = node
+        best3[max_n] = max_c
+
+    return best3
+
 
 if __name__ == '__main__':
     import graph_parser as gparser
     G = gparser.char_colab_graph()
+    n_name_dic = gparser.car_name_dic()
     # print("Node Size: " + str(nx.number_of_nodes(G)))
     # print("Number of Edges: " + str(nx.number_of_edges(G)))
     # print("Average Degree: " + str(get_average_degree(G)))
-    # largest_component = get_largest_component(G)
+    #largest_component = get_largest_component(G)
     # print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
     # print("Diameter: " + str(nx.diameter(largest_component)))
-    show_power_law(G)
-    
+
+    # deg_cent = get_degree_centrality(G)
+
+    # print(get_3_best_nodes(deg_cent))
+    # print_names(n_name_dic, get_3_best_nodes(deg_cent))
+
+    # clos_cent = get_closeness_centrality(G)
+
+    # print(get_3_best_nodes(clos_cent))
+    # print_names(n_name_dic, get_3_best_nodes(clos_cent))
+
+    bet_cent = get_betweenness_centrality(G)
+
+    print(get_3_best_nodes(bet_cent))
+    print_names(n_name_dic, get_3_best_nodes(bet_cent))
