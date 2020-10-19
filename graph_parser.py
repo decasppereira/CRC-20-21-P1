@@ -1,7 +1,15 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
+
+
+
 def char_book_graph():
+
+    """ 
+    Returns a graph G that links every character to the corresponding book that appears in the data set 
+    """
+
     G = nx.Graph()
 
     f = open("datasets/marvel_collaborations_dataset.txt", "r")
@@ -17,6 +25,12 @@ def char_book_graph():
     return G
 
 def char_colab_graph():
+
+    
+    """ 
+    Returns a graph G that links every 2 characters that colaborate with each other
+    """
+
     G = nx.Graph()
 
     f = open("datasets/marvel_collaborations_dataset.txt", "r")
@@ -47,6 +61,10 @@ def char_colab_graph():
     return G
 
 def car_name_dic():
+
+    """ 
+    Returns a dictionary with the format {id:name}
+    """
 
     f = open("marvel_names.txt", "r")
     lines = f.readlines()[1:]

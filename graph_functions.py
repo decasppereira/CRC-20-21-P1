@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
+import graph_parser as gparser
 from scipy.optimize import curve_fit
 
 
@@ -8,6 +9,11 @@ def get_average_degree(G):
     return (nx.number_of_edges(G)*2)/nx.number_of_nodes(G)
 
 def show_abolute_frequency(G):
+
+    """
+    Shows a chart with the corresponding absolute frequency of each character appearence in a book
+    """
+
     degree_list = nx.degree_histogram(G)
     max_degree = len(degree_list)
     x_axis = [i for i in range(max_degree)]
@@ -21,6 +27,11 @@ def linear_funct(x, lN, a):
     return a * x + lN
 
 def show_linear_scale_dist(G):
+
+    """
+    Shows a chart with the degrees of a node and its probability
+    """
+
     degree_list = nx.degree_histogram(G)
     max_degree = len(degree_list)
     N = nx.number_of_nodes(G)
@@ -35,6 +46,11 @@ def show_linear_scale_dist(G):
     plt.show()
 
 def show_log_scale_dist(G):
+
+    """
+    Shows a chart with the degrees of a node and its probability in a log-scale
+    """
+
     degree_list = nx.degree_histogram(G)
     max_degree = len(degree_list)
     N = nx.number_of_nodes(G)
@@ -46,6 +62,9 @@ def show_log_scale_dist(G):
     plt.show()
 
 def show_power_law(G):
+
+    """Shows a chart with the degrees of a node and its probability plus its power law"""
+
     degree_list = nx.degree_histogram(G)
     max_degree = len(degree_list)
     N = nx.number_of_nodes(G)
@@ -63,8 +82,6 @@ def show_power_law(G):
     plt.scatter(x, y, s=1)
     plt.plot(x[1:], power_law(x[1:], *popt), 'r')
 
-    # plt.xscale('log')
-    # plt.yscale('log')
     plt.show()
     print('Power law: Pk= '+ str(popt[0])+' * k** -'+ str(popt[1]))
 
@@ -104,6 +121,9 @@ def get_closeness_centrality(G):
 def get_betweenness_centrality(G):
     return nx.betweenness_centrality(G)
 
+
+######## Auxiliar functions ###############
+
 def print_names(n_name_dic, nodes):
     for node in nodes:
         print(n_name_dic[node])
@@ -122,29 +142,8 @@ def get_3_best_nodes(dic_node_cent):
 
     return best3
 
+###########################################
 
 if __name__ == '__main__':
-    import graph_parser as gparser
     G = gparser.char_colab_graph()
-    #n_name_dic = gparser.car_name_dic()
-    # print("Node Size: " + str(nx.number_of_nodes(G)))
-    # print("Number of Edges: " + str(nx.number_of_edges(G)))
-    # print("Average Degree: " + str(get_average_degree(G)))
-    #largest_component = get_largest_component(G)
-    # print("Average Path Length: " + str(nx.average_shortest_path_length(largest_component)))
-    # print("Diameter: " + str(nx.diameter(largest_component)))
 
-    # deg_cent = get_degree_centrality(G)
-
-    # print(get_3_best_nodes(deg_cent))
-    # print_names(n_name_dic, get_3_best_nodes(deg_cent))
-
-    # clos_cent = get_closeness_centrality(G)
-
-    # print(get_3_best_nodes(clos_cent))
-    # print_names(n_name_dic, get_3_best_nodes(clos_cent))
-
-    # bet_cent = get_betweenness_centrality(G)
-
-    # print(get_3_best_nodes(bet_cent))
-    # print_names(n_name_dic, get_3_best_nodes(bet_cent))
